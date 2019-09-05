@@ -8,10 +8,10 @@ tags:
   - 
 ---
 ### Objective
-In this article we will see how to configure a secure Spring cloud config server, backed with the configuration files 
+In this article we will see how to configure a secure Spring Cloud Config Server, backed with configuration files 
 from a private GitHub repo. This server will be serving configuration to microservices built with Spring boot 2.x. 
-This will be extended further in next article where we will also include a spring cloud bus system to inform all 
-the microservices about any config change in runtime and to update their state without shutdown.
+This system will be extended further in next article where we will also include a spring cloud bus system to inform all 
+the microservices about any config change in runtime and to update their state without downtime.
 
 ### Setting up a git config repository
 First, we will create a new repository in our GitHub account and checkout the branch in local system. 
@@ -19,14 +19,14 @@ Note that we are creating a private repository as shown below.
 
 ![creating github private repo][1]
 
-Generally, in any production ready project we have different configuration for different environments. Spring boot 
-provides a wonderful way to manage this via “profiles” which we will be making use of in our microservices later. 
-So, we will be managing our configuration files and folders to make use of spring profiles. 
-For this article, we will use a microservice which has three profiles, dev, qa, prod.  
+Generally, in any production ready project we have different configurations for different environments. Spring boot 
+provides a wonderful way to manage this via “profiles” which we will be making use of in our microservices later.
+For this article, we will use a microservice which works on three profiles, dev, qa, prod.
 
-Once we checkout the branch, we will put three property files (each specific to our application’s profile config) named 
-mydbapplication-dev.properties, mydbapplication-qa.properties and mydbapplication-prod.properties. When using spring 
-config supporting profiles, you can setup your configuration file path and names in one of the patterns mentioned below. 
+After checkout we will create three 'properties' files, each representing separate environment mydbapplication-dev.properties, 
+mydbapplication-qa.properties and mydbapplication-prod.properties. When using spring config along with 'profiles', 
+you can setup your configuration file path and names in one of the patterns mentioned below. If you have common 
+properties, read the notes section at the bottom of this article.
 
 {% highlight text %}
 /{application}/{profile}[/{label}]
@@ -35,12 +35,12 @@ config supporting profiles, you can setup your configuration file path and names
 /{application}-{profile}.properties
 /{label}/{application}-{profile}.properties
 
-{application} is your client microservice name generally denoted by spring.config.name 
+{application} is your client microservice name generally denoted by spring.config.name. In our case it is 'mydbapplication'
 {label} is an optional git branch (default master) 
 {profile} is the profile name on which our client microservice is running, for which the microservice is going to query the config server.
 {% endhighlight %}
 
-Each file will have a same property keys but may contain different values as shown below, then we will commit and push 
+Each file may contain same property keys but you may set different values as shown below. After creating the files, commit and push 
 it to remote branch.
 
 mydbapplication-dev.properties
@@ -194,6 +194,15 @@ In the next part of this article, we will also include a spring cloud bus system
 any config change in runtime and to update their state without shutdown.
 
 Notes:
+* If you have common properties across environment, you can use a file named {application}.properties. The property defined in 
+this file will be overridden by any profile specific property file. An environment-specific properties will overriding the 
+non-specific ones (like {application}.properties file).
+* Another important thing to note is, if client's active profile is not set (spring.profiles.active) the system will 
+work with a profile named 'default' and will look for {application}-default.properties, so you can also set all your default 
+or common properties in this file too. To summarize, any property in {application}.properties will be overridden by 
+{application}-default.properties (if this file exist). If {application}-default.properties does not exist client will use values from 
+{application}.properties. If spring.profiles.active is set, the profile specific file overrides any property values set by 
+{application}.properties and {application}-default.properties but inherits non common properties.
 * In our cloud config server, we looked at a property 'spring.cloud.config.server.git.search-paths'. This is 
 useful in cases where your properties files are not at the root of your repo OR you want the server to navigate at 
 some folder to find the property files, you can also use placeholders like {application} or {profile} or some folder 
@@ -202,6 +211,7 @@ a comma, you can even use regex syntax.
 * In case you want your client applications to fail startup if they are unable to connect to the config server, 
 set spring.cloud.config.fail-fast=true
 * Look into spring.cloud.config.retry if you want your clients to retry connection in case of failure
+
 
 Git repo: 
 * https://github.com/sumeetmondal/iamsumeet-config-repo
