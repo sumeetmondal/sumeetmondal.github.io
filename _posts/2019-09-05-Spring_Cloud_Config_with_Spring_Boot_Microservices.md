@@ -1,6 +1,6 @@
 ---
 title: "Spring Cloud Config with Spring Boot Microservices"
-date: 2019-09-05T15:34:30-04:00
+date: 2019-09-05T08:00:00+07:00
 categories:
   - Technology
 tags:
