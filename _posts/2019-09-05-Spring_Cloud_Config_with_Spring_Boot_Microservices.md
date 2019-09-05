@@ -199,10 +199,8 @@ useful in cases where your properties files are not at the root of your repo OR 
 some folder to find the property files, you can also use placeholders like {application} or {profile} or some folder 
 name like “AllApplicationProperties”. In fact, this property is an array, so you can add more folder/paths separated by 
 a comma, you can even use regex syntax. 
-
 * In case you want your client applications to fail startup if they are unable to connect to the config server, 
 set spring.cloud.config.fail-fast=true
-
 * Look into spring.cloud.config.retry if you want your clients to retry connection in case of failure
 
 Git repo: 
