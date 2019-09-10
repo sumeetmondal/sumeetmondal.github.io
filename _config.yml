@@ -27,6 +27,12 @@ plugins:
   - jekyll-include-cache
   - rouge
 
+analytics:
+  provider: "google-gtag"
+  google:
+    tracking_id: "UA-147548641-1"
+    anonymize_ip: false # default
+
 author:
   name   : "Sumeet Mondal"
   avatar : "/assets/images/bio-photo.jpg"
