@@ -8,7 +8,7 @@ components:
           type: string
         zipCode:
           type: string
-        city:
+        cityName:
           type: string
         countryCode:
           type: string
