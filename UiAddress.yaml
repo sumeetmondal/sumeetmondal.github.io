@@ -1,0 +1,14 @@
+components:
+  schemas:
+    UiAddress:
+      properties:
+        streetName:
+          type: string
+        streetNumber:
+          type: string
+        zipCode:
+          type: string
+        city:
+          type: string
+        countryCode:
+          type: string
